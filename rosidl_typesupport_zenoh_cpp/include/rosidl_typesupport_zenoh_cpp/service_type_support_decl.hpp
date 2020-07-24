@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROSIDL_TYPESUPPORT_FASTRTPS_CPP__SERVICE_TYPE_SUPPORT_DECL_HPP_
-#define ROSIDL_TYPESUPPORT_FASTRTPS_CPP__SERVICE_TYPE_SUPPORT_DECL_HPP_
+#ifndef ROSIDL_TYPESUPPORT_ZENOH_CPP__SERVICE_TYPE_SUPPORT_DECL_HPP_
+#define ROSIDL_TYPESUPPORT_ZENOH_CPP__SERVICE_TYPE_SUPPORT_DECL_HPP_
 
 // Provides the definition of the rosidl_service_type_support_t struct.
 #include <rosidl_runtime_c/service_type_support_struct.h>
-// Provides visibility macros like ROSIDL_TYPESUPPORT_FASTRTPS_CPP_PUBLIC.
-#include <rosidl_typesupport_fastrtps_cpp/visibility_control.h>
+// Provides visibility macros like ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC.
+#include <rosidl_typesupport_zenoh_cpp/visibility_control.h>
 
-namespace rosidl_typesupport_fastrtps_cpp
+namespace rosidl_typesupport_zenoh_cpp
 {
 
 /// Get the rosidl service typesupport handler of the type.
@@ -29,9 +29,9 @@ namespace rosidl_typesupport_fastrtps_cpp
  * \return The rosidl_service_type_support_t of type T.
  */
 template<typename T>
-ROSIDL_TYPESUPPORT_FASTRTPS_CPP_PUBLIC
+ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC
 const rosidl_service_type_support_t * get_service_type_support_handle();
 
-}  // namespace rosidl_typesupport_fastrtps_cpp
+}  // namespace rosidl_typesupport_zenoh_cpp
 
-#endif  // ROSIDL_TYPESUPPORT_FASTRTPS_CPP__SERVICE_TYPE_SUPPORT_DECL_HPP_
+#endif  // ROSIDL_TYPESUPPORT_ZENOH_CPP__SERVICE_TYPE_SUPPORT_DECL_HPP_

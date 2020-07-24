@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rosidl_typesupport_fastrtps_cpp/visibility_control.h>
+#include <rosidl_typesupport_zenoh_cpp/visibility_control.h>
 
-namespace rosidl_typesupport_fastrtps_cpp
+namespace rosidl_typesupport_zenoh_cpp
 {
 
-ROSIDL_TYPESUPPORT_FASTRTPS_CPP_EXPORT
-const char * typesupport_identifier = "rosidl_typesupport_fastrtps_cpp";
+ROSIDL_TYPESUPPORT_ZENOH_CPP_EXPORT
+const char * typesupport_identifier = "rosidl_typesupport_zenoh_cpp";
 
-}  // namespace rosidl_typesupport_fastrtps_cpp
+}  // namespace rosidl_typesupport_zenoh_cpp

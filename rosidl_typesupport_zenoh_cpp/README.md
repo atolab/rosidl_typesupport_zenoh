@@ -1,10 +1,10 @@
-# rosidl_typesupport_fastrtps_cpp
+# rosidl_typesupport_zenoh_cpp
 
-`rosidl_typesupport_fastrtps_cpp` is a package that provides functionality for generating rosidl C++ interfaces for eProsima FastRTPS.
+`rosidl_typesupport_zenoh_cpp` is a package that provides functionality for generating rosidl C++ interfaces for Zenoh using eProsima FastCDR.
 
 ## Features
 
-`rosidl_typesupport_fastrtps_cpp` features are described in [FEATURES](docs/FEATURES.md).
+`rosidl_typesupport_zenoh_cpp` features are described in [FEATURES](docs/FEATURES.md).
 
 ## Quality Declaration
 

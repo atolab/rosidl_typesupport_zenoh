@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROSIDL_TYPESUPPORT_FASTRTPS_CPP__SERVICE_TYPE_SUPPORT_H_
-#define ROSIDL_TYPESUPPORT_FASTRTPS_CPP__SERVICE_TYPE_SUPPORT_H_
+#ifndef ROSIDL_TYPESUPPORT_ZENOH_CPP__SERVICE_TYPE_SUPPORT_H_
+#define ROSIDL_TYPESUPPORT_ZENOH_CPP__SERVICE_TYPE_SUPPORT_H_
 
 #include <stdint.h>
 #include <rmw/types.h>
 #include "rosidl_runtime_c/service_type_support_struct.h"
 
-#include "rosidl_typesupport_fastrtps_cpp/message_type_support.h"
+#include "rosidl_typesupport_zenoh_cpp/message_type_support.h"
 
 /// Encapsulates the callbacks for getting properties of this rosidl type.
 typedef struct service_type_support_callbacks_t
@@ -35,4 +35,4 @@ typedef struct service_type_support_callbacks_t
   const rosidl_message_type_support_t * response_members_;
 } service_type_support_callbacks_t;
 
-#endif  // ROSIDL_TYPESUPPORT_FASTRTPS_CPP__SERVICE_TYPE_SUPPORT_H_
+#endif  // ROSIDL_TYPESUPPORT_ZENOH_CPP__SERVICE_TYPE_SUPPORT_H_

@@ -19,7 +19,7 @@ find_package(fastrtps REQUIRED CONFIG)
 find_package(FastRTPS REQUIRED MODULE)
 
 
-set(_output_path "${CMAKE_CURRENT_BINARY_DIR}/rosidl_typesupport_fastrtps_cpp/${PROJECT_NAME}")
+set(_output_path "${CMAKE_CURRENT_BINARY_DIR}/rosidl_typesupport_zenoh_cpp/${PROJECT_NAME}")
 
 # Create a list of files that will be generated from each IDL file
 set(_generated_files "")
@@ -30,8 +30,8 @@ foreach(_abs_idl_file ${rosidl_generate_interfaces_ABS_IDL_FILES})
   # Turn idl name into file names
   string_camel_case_to_lower_case_underscore("${_idl_name}" _header_name)
   list(APPEND _generated_files
-    "${_output_path}/${_parent_folder}/detail/dds_fastrtps/${_header_name}__type_support.cpp"
-    "${_output_path}/${_parent_folder}/detail/${_header_name}__rosidl_typesupport_fastrtps_cpp.hpp"
+    "${_output_path}/${_parent_folder}/detail/zenoh/${_header_name}__type_support.cpp"
+    "${_output_path}/${_parent_folder}/detail/${_header_name}__rosidl_typesupport_zenoh_cpp.hpp"
   )
 endforeach()
 
@@ -51,14 +51,14 @@ endforeach()
 
 # Create a list of templates and source files this generator uses, and check that they exist
 set(target_dependencies
-  "${rosidl_typesupport_fastrtps_cpp_BIN}"
-  ${rosidl_typesupport_fastrtps_cpp_GENERATOR_FILES}
-  "${rosidl_typesupport_fastrtps_cpp_TEMPLATE_DIR}/idl__rosidl_typesupport_fastrtps_cpp.hpp.em"
-  "${rosidl_typesupport_fastrtps_cpp_TEMPLATE_DIR}/idl__type_support.cpp.em"
-  "${rosidl_typesupport_fastrtps_cpp_TEMPLATE_DIR}/msg__rosidl_typesupport_fastrtps_cpp.hpp.em"
-  "${rosidl_typesupport_fastrtps_cpp_TEMPLATE_DIR}/msg__type_support.cpp.em"
-  "${rosidl_typesupport_fastrtps_cpp_TEMPLATE_DIR}/srv__rosidl_typesupport_fastrtps_cpp.hpp.em"
-  "${rosidl_typesupport_fastrtps_cpp_TEMPLATE_DIR}/srv__type_support.cpp.em"
+  "${rosidl_typesupport_zenoh_cpp_BIN}"
+  ${rosidl_typesupport_zenoh_cpp_GENERATOR_FILES}
+  "${rosidl_typesupport_zenoh_cpp_TEMPLATE_DIR}/idl__rosidl_typesupport_zenoh_cpp.hpp.em"
+  "${rosidl_typesupport_zenoh_cpp_TEMPLATE_DIR}/idl__type_support.cpp.em"
+  "${rosidl_typesupport_zenoh_cpp_TEMPLATE_DIR}/msg__rosidl_typesupport_zenoh_cpp.hpp.em"
+  "${rosidl_typesupport_zenoh_cpp_TEMPLATE_DIR}/msg__type_support.cpp.em"
+  "${rosidl_typesupport_zenoh_cpp_TEMPLATE_DIR}/srv__rosidl_typesupport_zenoh_cpp.hpp.em"
+  "${rosidl_typesupport_zenoh_cpp_TEMPLATE_DIR}/srv__type_support.cpp.em"
   ${rosidl_generate_interfaces_ABS_IDL_FILES}
   ${_dependency_files})
 foreach(dep ${target_dependencies})
@@ -68,21 +68,21 @@ foreach(dep ${target_dependencies})
 endforeach()
 
 # Write all this to a file to work around command line length limitations on some platforms
-set(generator_arguments_file "${CMAKE_CURRENT_BINARY_DIR}/rosidl_typesupport_fastrtps_cpp__arguments.json")
+set(generator_arguments_file "${CMAKE_CURRENT_BINARY_DIR}/rosidl_typesupport_zenoh_cpp__arguments.json")
 rosidl_write_generator_arguments(
   "${generator_arguments_file}"
   PACKAGE_NAME "${PROJECT_NAME}"
   IDL_TUPLES "${rosidl_generate_interfaces_IDL_TUPLES}"
   ROS_INTERFACE_DEPENDENCIES "${_dependencies}"
   OUTPUT_DIR "${_output_path}"
-  TEMPLATE_DIR "${rosidl_typesupport_fastrtps_cpp_TEMPLATE_DIR}"
+  TEMPLATE_DIR "${rosidl_typesupport_zenoh_cpp_TEMPLATE_DIR}"
   TARGET_DEPENDENCIES ${target_dependencies}
 )
 
 # Add a command that invokes generator at build time
 add_custom_command(
   OUTPUT ${_generated_files}
-  COMMAND ${PYTHON_EXECUTABLE} ${rosidl_typesupport_fastrtps_cpp_BIN}
+  COMMAND ${PYTHON_EXECUTABLE} ${rosidl_typesupport_zenoh_cpp_BIN}
   --generator-arguments-file "${generator_arguments_file}"
   DEPENDS ${target_dependencies}
   COMMENT "Generating C++ type support for eProsima Fast-RTPS"
@@ -91,15 +91,15 @@ add_custom_command(
 
 # generate header to switch between export and import for a specific package
 set(_visibility_control_file
-"${_output_path}/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h")
+"${_output_path}/msg/rosidl_typesupport_zenoh_cpp__visibility_control.h")
 string(TOUPPER "${PROJECT_NAME}" PROJECT_NAME_UPPER)
 configure_file(
-  "${rosidl_typesupport_fastrtps_cpp_TEMPLATE_DIR}/rosidl_typesupport_fastrtps_cpp__visibility_control.h.in"
+  "${rosidl_typesupport_zenoh_cpp_TEMPLATE_DIR}/rosidl_typesupport_zenoh_cpp__visibility_control.h.in"
   "${_visibility_control_file}"
   @ONLY
 )
 
-set(_target_suffix "__rosidl_typesupport_fastrtps_cpp")
+set(_target_suffix "__rosidl_typesupport_zenoh_cpp")
 
 # Create a library that builds the generated files
 add_library(${rosidl_generate_interfaces_TARGET}${_target_suffix}
@@ -118,7 +118,7 @@ set_target_properties(${rosidl_generate_interfaces_TARGET}${_target_suffix}
 # Set flag for visibility macro
 if(WIN32)
   target_compile_definitions(${rosidl_generate_interfaces_TARGET}${_target_suffix}
-    PRIVATE "ROSIDL_TYPESUPPORT_FASTRTPS_CPP_BUILDING_DLL_${PROJECT_NAME}")
+    PRIVATE "ROSIDL_TYPESUPPORT_ZENOH_CPP_BUILDING_DLL_${PROJECT_NAME}")
 endif()
 
 # Set compiler flags
@@ -137,14 +137,14 @@ set_target_properties(${rosidl_generate_interfaces_TARGET}${_target_suffix}
 target_include_directories(${rosidl_generate_interfaces_TARGET}${_target_suffix}
   PUBLIC
   ${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_cpp
-  ${CMAKE_CURRENT_BINARY_DIR}/rosidl_typesupport_fastrtps_cpp
+  ${CMAKE_CURRENT_BINARY_DIR}/rosidl_typesupport_zenoh_cpp
 )
 
 ament_target_dependencies(${rosidl_generate_interfaces_TARGET}${_target_suffix}
   "fastrtps"
   "rmw"
   "rosidl_runtime_c"
-  "rosidl_typesupport_fastrtps_cpp"
+  "rosidl_typesupport_zenoh_cpp"
   "rosidl_typesupport_interface")
 
 # Depend on dependencies
@@ -197,13 +197,13 @@ if(BUILD_TESTING AND rosidl_generate_interfaces_ADD_LINTER_TESTS)
   if(NOT _generated_files STREQUAL "")
     find_package(ament_cmake_cppcheck REQUIRED)
     ament_cppcheck(
-      TESTNAME "cppcheck_rosidl_typesupport_fastrtps_cpp"
+      TESTNAME "cppcheck_rosidl_typesupport_zenoh_cpp"
       ${_generated_files})
 
     find_package(ament_cmake_cpplint REQUIRED)
     get_filename_component(_cpplint_root "${_output_path}" DIRECTORY)
     ament_cpplint(
-      TESTNAME "cpplint_rosidl_typesupport_fastrtps_cpp"
+      TESTNAME "cpplint_rosidl_typesupport_zenoh_cpp"
       # the generated code might contain longer lines for templated types
       MAX_LINE_LENGTH 999
       ROOT "${_cpplint_root}"
@@ -211,7 +211,7 @@ if(BUILD_TESTING AND rosidl_generate_interfaces_ADD_LINTER_TESTS)
 
     find_package(ament_cmake_uncrustify REQUIRED)
     ament_uncrustify(
-      TESTNAME "uncrustify_rosidl_typesupport_fastrtps_cpp"
+      TESTNAME "uncrustify_rosidl_typesupport_zenoh_cpp"
       # the generated code might contain longer lines for templated types
       # set the value to zero to tell uncrustify to ignore line lengths
       MAX_LINE_LENGTH 0

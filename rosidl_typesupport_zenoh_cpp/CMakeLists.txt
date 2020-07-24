@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(rosidl_typesupport_fastrtps_cpp)
+project(rosidl_typesupport_zenoh_cpp)
 
-if(DEFINED ENV{FASTRTPS_STATIC_DISABLE})
-  set(FASTRTPS_STATIC_DISABLE $ENV{FASTRTPS_STATIC_DISABLE}
+if(DEFINED ENV{ZENOH_STATIC_DISABLE})
+  set(ZENOH_STATIC_DISABLE $ENV{ZENOH_STATIC_DISABLE}
     CACHE BOOL "If Connext Static should be disabled.")
 else()
-  set(FASTRTPS_STATIC_DISABLE FALSE
+  set(ZENOH_STATIC_DISABLE FALSE
     CACHE BOOL "If Connext Static should be disabled.")
 endif()
 
@@ -25,9 +25,9 @@ find_package(fastrtps_cmake_module QUIET)
 find_package(fastcdr REQUIRED CONFIG)
 find_package(fastrtps REQUIRED CONFIG)
 find_package(FastRTPS REQUIRED MODULE)
-if(FASTRTPS_STATIC_DISABLE)
+if(ZENOH_STATIC_DISABLE)
   ament_package()
-  message(STATUS "fastrtps static rmw implementation explicitly disabled - skipping '${PROJECT_NAME}'")
+  message(STATUS "Zenoh static rmw implementation explicitly disabled - skipping '${PROJECT_NAME}'")
   return()
 endif()
 
@@ -49,7 +49,7 @@ add_library(${PROJECT_NAME} SHARED
   src/wstring_conversion.cpp)
 if(WIN32)
   target_compile_definitions(${PROJECT_NAME}
-    PRIVATE "ROSIDL_TYPESUPPORT_FASTRTPS_CPP_BUILDING_DLL")
+    PRIVATE "ROSIDL_TYPESUPPORT_ZENOH_CPP_BUILDING_DLL")
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
@@ -93,12 +93,12 @@ if(BUILD_TESTING)
 endif()
 
 ament_package(
-  CONFIG_EXTRAS "rosidl_typesupport_fastrtps_cpp-extras.cmake.in"
+  CONFIG_EXTRAS "rosidl_typesupport_zenoh_cpp-extras.cmake.in"
 )
 
 install(
-  PROGRAMS bin/rosidl_typesupport_fastrtps_cpp
-  DESTINATION lib/rosidl_typesupport_fastrtps_cpp
+  PROGRAMS bin/rosidl_typesupport_zenoh_cpp
+  DESTINATION lib/rosidl_typesupport_zenoh_cpp
 )
 install(
   DIRECTORY cmake resource

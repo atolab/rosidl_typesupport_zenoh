@@ -1,4 +1,4 @@
-@# Included from rosidl_typesupport_fastrtps_cpp/resource/idl__rosidl_typesupport_fastrtps_cpp.hpp.em
+@# Included from rosidl_typesupport_zenoh_cpp/resource/idl__rosidl_typesupport_zenoh_cpp.hpp.em
 @{
 from rosidl_cmake import convert_camel_case_to_lower_case_underscore
 
@@ -9,7 +9,7 @@ include_base = '/'.join(include_parts)
 header_files = [
     'rosidl_runtime_c/message_type_support_struct.h',
     'rosidl_typesupport_interface/macros.h',
-    package_name + '/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h',
+    package_name + '/msg/rosidl_typesupport_zenoh_cpp__visibility_control.h',
     include_base + '__struct.hpp',
 ]
 }@
@@ -55,34 +55,34 @@ namespace @(ns)
 {
 @[end for]@
 
-namespace typesupport_fastrtps_cpp
+namespace typesupport_zenoh_cpp
 {
 
 bool
-ROSIDL_TYPESUPPORT_FASTRTPS_CPP_PUBLIC_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
 cdr_serialize(
   const @('::'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])) & ros_message,
   eprosima::fastcdr::Cdr & cdr);
 
 bool
-ROSIDL_TYPESUPPORT_FASTRTPS_CPP_PUBLIC_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
 cdr_deserialize(
   eprosima::fastcdr::Cdr & cdr,
   @('::'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])) & ros_message);
 
 size_t
-ROSIDL_TYPESUPPORT_FASTRTPS_CPP_PUBLIC_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
 get_serialized_size(
   const @('::'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])) & ros_message,
   size_t current_alignment);
 
 size_t
-ROSIDL_TYPESUPPORT_FASTRTPS_CPP_PUBLIC_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
 max_serialized_size_@(message.structure.namespaced_type.name)(
   bool & full_bounded,
   size_t current_alignment);
 
-}  // namespace typesupport_fastrtps_cpp
+}  // namespace typesupport_zenoh_cpp
 @[  for ns in reversed(message.structure.namespaced_type.namespaces)]@
 
 }  // namespace @(ns)
@@ -93,9 +93,9 @@ extern "C"
 {
 #endif
 
-ROSIDL_TYPESUPPORT_FASTRTPS_CPP_PUBLIC_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
 const rosidl_message_type_support_t *
-  ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_fastrtps_cpp, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])))();
+  ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_zenoh_cpp, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])))();
 
 #ifdef __cplusplus
 }

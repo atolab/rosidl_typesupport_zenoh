@@ -1,14 +1,14 @@
-@# Included from rosidl_typesupport_fastrtps_cpp/resource/idl__rosidl_typesupport_fastrtps_cpp.hpp.em
+@# Included from rosidl_typesupport_zenoh_cpp/resource/idl__rosidl_typesupport_zenoh_cpp.hpp.em
 @{
 TEMPLATE(
-    'msg__rosidl_typesupport_fastrtps_cpp.hpp.em',
+    'msg__rosidl_typesupport_zenoh_cpp.hpp.em',
     package_name=package_name, interface_path=interface_path, message=service.request_message,
     include_directives=include_directives)
 }@
 
 @{
 TEMPLATE(
-    'msg__rosidl_typesupport_fastrtps_cpp.hpp.em',
+    'msg__rosidl_typesupport_zenoh_cpp.hpp.em',
     package_name=package_name, interface_path=interface_path, message=service.response_message,
     include_directives=include_directives)
 }@
@@ -18,7 +18,7 @@ header_files = [
     'rmw/types.h',
     'rosidl_typesupport_cpp/service_type_support.hpp',
     'rosidl_typesupport_interface/macros.h',
-    package_name + '/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h',
+    package_name + '/msg/rosidl_typesupport_zenoh_cpp__visibility_control.h',
 ]
 }@
 @[for header_file in header_files]@
@@ -36,9 +36,9 @@ extern "C"
 {
 #endif
 
-ROSIDL_TYPESUPPORT_FASTRTPS_CPP_PUBLIC_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
 const rosidl_service_type_support_t *
-  ROSIDL_TYPESUPPORT_INTERFACE__SERVICE_SYMBOL_NAME(rosidl_typesupport_fastrtps_cpp, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [service.namespaced_type.name])))();
+  ROSIDL_TYPESUPPORT_INTERFACE__SERVICE_SYMBOL_NAME(rosidl_typesupport_zenoh_cpp, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [service.namespaced_type.name])))();
 
 #ifdef __cplusplus
 }

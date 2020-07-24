@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROSIDL_TYPESUPPORT_FASTRTPS_CPP__IDENTIFIER_HPP_
-#define ROSIDL_TYPESUPPORT_FASTRTPS_CPP__IDENTIFIER_HPP_
+#ifndef ROSIDL_TYPESUPPORT_ZENOH_CPP__IDENTIFIER_HPP_
+#define ROSIDL_TYPESUPPORT_ZENOH_CPP__IDENTIFIER_HPP_
 
-#include <rosidl_typesupport_fastrtps_cpp/visibility_control.h>
+#include <rosidl_typesupport_zenoh_cpp/visibility_control.h>
 
-namespace rosidl_typesupport_fastrtps_cpp
+namespace rosidl_typesupport_zenoh_cpp
 {
 
-/// String identifier specific to `rosidl_typesupport_fastrtps_cpp`.
-ROSIDL_TYPESUPPORT_FASTRTPS_CPP_IMPORT
+/// String identifier specific to `rosidl_typesupport_zenoh_cpp`.
+ROSIDL_TYPESUPPORT_ZENOH_CPP_IMPORT
 extern const char * typesupport_identifier;
 
-}  // namespace rosidl_typesupport_fastrtps_cpp
+}  // namespace rosidl_typesupport_zenoh_cpp
 
-#endif  // ROSIDL_TYPESUPPORT_FASTRTPS_CPP__IDENTIFIER_HPP_
+#endif  // ROSIDL_TYPESUPPORT_ZENOH_CPP__IDENTIFIER_HPP_

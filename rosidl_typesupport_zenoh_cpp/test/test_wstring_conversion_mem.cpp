@@ -18,9 +18,9 @@
 #include <osrf_testing_tools_cpp/scope_exit.hpp>
 #include <string>
 
-#include "rosidl_typesupport_fastrtps_cpp/wstring_conversion.hpp"
+#include "rosidl_typesupport_zenoh_cpp/wstring_conversion.hpp"
 
-using rosidl_typesupport_fastrtps_cpp::wstring_to_u16string;
+using rosidl_typesupport_zenoh_cpp::wstring_to_u16string;
 
 TEST(test_wstring_conversion, u16string_resize_failure)
 {

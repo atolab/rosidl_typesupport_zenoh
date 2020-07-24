@@ -3,12 +3,12 @@
 import argparse
 import sys
 
-from rosidl_typesupport_fastrtps_cpp import generate_cpp
+from rosidl_typesupport_zenoh_cpp import generate_cpp
 
 
 def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser(
-        description='Generate the C++ interfaces for fastrtps.',
+        description='Generate the C++ interfaces for Zenoh.',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         '--generator-arguments-file',
