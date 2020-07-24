@@ -1,4 +1,4 @@
-@# Included from rosidl_typesupport_fastrtps_c/resource/idl__type_support_c.cpp.em
+@# Included from rosidl_typesupport_zenoh_c/resource/idl__type_support_c.cpp.em
 @{
 TEMPLATE(
     'msg__type_support_c.cpp.em',
@@ -22,10 +22,10 @@ include_base = '/'.join(include_parts)
 
 header_files = [
     # Provides the definition of the service_type_support_callbacks_t struct.
-    'rosidl_typesupport_fastrtps_cpp/service_type_support.h',
+    'rosidl_typesupport_zenoh_cpp/service_type_support.h',
     'rosidl_typesupport_cpp/service_type_support.hpp',
-    'rosidl_typesupport_fastrtps_c/identifier.h',
-    package_name + '/msg/rosidl_typesupport_fastrtps_c__visibility_control.h',
+    'rosidl_typesupport_zenoh_c/identifier.h',
+    package_name + '/msg/rosidl_typesupport_zenoh_c__visibility_control.h',
     include_base + '.h',
 ]
 }@
@@ -47,18 +47,18 @@ extern "C"
 static service_type_support_callbacks_t @(service.namespaced_type.name)__callbacks = {
   "@('::'.join([package_name] + list(interface_path.parents[0].parts)))",
   "@(service.namespaced_type.name)",
-  ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_fastrtps_c, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [service.namespaced_type.name]))_Request)(),
-  ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_fastrtps_c, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [service.namespaced_type.name]))_Response)(),
+  ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_zenoh_c, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [service.namespaced_type.name]))_Request)(),
+  ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_zenoh_c, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [service.namespaced_type.name]))_Response)(),
 };
 
 static rosidl_service_type_support_t @(service.namespaced_type.name)__handle = {
-  rosidl_typesupport_fastrtps_c__identifier,
+  rosidl_typesupport_zenoh_c__identifier,
   &@(service.namespaced_type.name)__callbacks,
   get_service_typesupport_handle_function,
 };
 
 const rosidl_service_type_support_t *
-ROSIDL_TYPESUPPORT_INTERFACE__SERVICE_SYMBOL_NAME(rosidl_typesupport_fastrtps_c, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [service.namespaced_type.name])))() {
+ROSIDL_TYPESUPPORT_INTERFACE__SERVICE_SYMBOL_NAME(rosidl_typesupport_zenoh_c, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [service.namespaced_type.name])))() {
   return &@(service.namespaced_type.name)__handle;
 }
 

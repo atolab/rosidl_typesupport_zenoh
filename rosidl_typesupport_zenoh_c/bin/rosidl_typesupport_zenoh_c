@@ -4,7 +4,7 @@ import argparse
 import os
 import sys
 
-from rosidl_typesupport_fastrtps_c import generate_typesupport_fastrtps_c
+from rosidl_typesupport_zenoh_c import generate_typesupport_zenoh_c
 
 
 def is_valid_file(parser, file_name):
@@ -18,7 +18,7 @@ def is_valid_file(parser, file_name):
 
 def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser(
-        description='Generate the C interfaces for fastrtps.',
+        description='Generate the C interfaces for Zenoh.',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         '--generator-arguments-file',
@@ -26,7 +26,7 @@ def main(argv=sys.argv[1:]):
         help='The location of the file containing the generator arguments')
     args = parser.parse_args(argv)
 
-    return generate_typesupport_fastrtps_c(args.generator_arguments_file)
+    return generate_typesupport_zenoh_c(args.generator_arguments_file)
 
 
 if __name__ == '__main__':

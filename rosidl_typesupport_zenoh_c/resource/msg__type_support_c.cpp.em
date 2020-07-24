@@ -1,4 +1,4 @@
-@# Included from rosidl_typesupport_fastrtps_c/resource/idl__type_support_c.cpp.em
+@# Included from rosidl_typesupport_zenoh_c/resource/idl__type_support_c.cpp.em
 @{
 from rosidl_cmake import convert_camel_case_to_lower_case_underscore
 from rosidl_parser.definition import AbstractGenericString
@@ -22,12 +22,12 @@ header_files = [
     'cassert',
     'limits',
     'string',
-    # Provides the rosidl_typesupport_fastrtps_c__identifier symbol declaration.
-    'rosidl_typesupport_fastrtps_c/identifier.h',
-    'rosidl_typesupport_fastrtps_c/wstring_conversion.hpp',
+    # Provides the rosidl_typesupport_zenoh_c__identifier symbol declaration.
+    'rosidl_typesupport_zenoh_c/identifier.h',
+    'rosidl_typesupport_zenoh_c/wstring_conversion.hpp',
     # Provides the definition of the message_type_support_callbacks_t struct.
-    'rosidl_typesupport_fastrtps_cpp/message_type_support.h',
-    package_name + '/msg/rosidl_typesupport_fastrtps_c__visibility_control.h',
+    'rosidl_typesupport_zenoh_cpp/message_type_support.h',
+    package_name + '/msg/rosidl_typesupport_zenoh_c__visibility_control.h',
     include_base + '__struct.h',
     include_base + '__functions.h',
     'fastcdr/Cdr.h',
@@ -123,24 +123,24 @@ for member in message.structure.members:
 }@
 @[for key in sorted(forward_declares.keys())]@
 @[  if key[0] != package_name]@
-ROSIDL_TYPESUPPORT_FASTRTPS_C_IMPORT_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_C_IMPORT_@(package_name)
 @[  end if]@
 size_t get_serialized_size_@('__'.join(key))(
   const void * untyped_ros_message,
   size_t current_alignment);
 
 @[  if key[0] != package_name]@
-ROSIDL_TYPESUPPORT_FASTRTPS_C_IMPORT_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_C_IMPORT_@(package_name)
 @[  end if]@
 size_t max_serialized_size_@('__'.join(key))(
   bool & full_bounded,
   size_t current_alignment);
 
 @[  if key[0] != package_name]@
-ROSIDL_TYPESUPPORT_FASTRTPS_C_IMPORT_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_C_IMPORT_@(package_name)
 @[  end if]@
 const rosidl_message_type_support_t *
-  ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_fastrtps_c, @(', '.join(key)))();
+  ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_zenoh_c, @(', '.join(key)))();
 @[end for]@
 
 @# // Make callback functions specific to this message type.
@@ -168,7 +168,7 @@ if isinstance(type_, AbstractNestedType):
     const message_type_support_callbacks_t * callbacks =
       static_cast<const message_type_support_callbacks_t *>(
       ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(
-        rosidl_typesupport_fastrtps_c, @(', '.join(type_.namespaced_name()))
+        rosidl_typesupport_zenoh_c, @(', '.join(type_.namespaced_name()))
       )()->data);
 @[  end if]@
 @[  if isinstance(member.type, AbstractNestedType)]@
@@ -211,7 +211,7 @@ if isinstance(type_, AbstractNestedType):
         fprintf(stderr, "string not null-terminated\n");
         return false;
       }
-      rosidl_typesupport_fastrtps_c::u16string_to_wstring(*str, wstr);
+      rosidl_typesupport_zenoh_c::u16string_to_wstring(*str, wstr);
       cdr << wstr;
     }
 @[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'wchar']@
@@ -246,7 +246,7 @@ if isinstance(type_, AbstractNestedType):
     cdr << str->data;
 @[  elif isinstance(member.type, AbstractWString)]@
     std::wstring wstr;
-    rosidl_typesupport_fastrtps_c::u16string_to_wstring(ros_message->@(member.name), wstr);
+    rosidl_typesupport_zenoh_c::u16string_to_wstring(ros_message->@(member.name), wstr);
     cdr << wstr;
 @[  elif isinstance(member.type, BasicType) and member.type.typename == 'boolean']@
     cdr << (ros_message->@(member.name) ? true : false);
@@ -288,7 +288,7 @@ if isinstance(type_, AbstractNestedType):
     const message_type_support_callbacks_t * callbacks =
       static_cast<const message_type_support_callbacks_t *>(
       ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(
-        rosidl_typesupport_fastrtps_c, @(', '.join(type_.namespaced_name()))
+        rosidl_typesupport_zenoh_c, @(', '.join(type_.namespaced_name()))
       )()->data);
 @[  end if]@
 @[  if isinstance(member.type, AbstractNestedType)]@
@@ -347,7 +347,7 @@ else:
         rosidl_runtime_c__U16String__init(&ros_i);
       }
       cdr >> wstr;
-      bool succeeded = rosidl_typesupport_fastrtps_c::wstring_to_u16string(wstr, ros_i);
+      bool succeeded = rosidl_typesupport_zenoh_c::wstring_to_u16string(wstr, ros_i);
       if (!succeeded) {
         fprintf(stderr, "failed to create wstring from u16string\n");
         rosidl_runtime_c__U16String__fini(&ros_i);
@@ -396,7 +396,7 @@ else:
     }
     std::wstring wstr;
     cdr >> wstr;
-    bool succeeded = rosidl_typesupport_fastrtps_c::wstring_to_u16string(wstr, ros_message->@(member.name));
+    bool succeeded = rosidl_typesupport_zenoh_c::wstring_to_u16string(wstr, ros_message->@(member.name));
     if (!succeeded) {
       fprintf(stderr, "failed to create wstring from u16string\n");
       rosidl_runtime_c__U16String__fini(&ros_message->@(member.name));
@@ -425,7 +425,7 @@ else:
   return true;
 }
 
-ROSIDL_TYPESUPPORT_FASTRTPS_C_PUBLIC_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_C_PUBLIC_@(package_name)
 size_t get_serialized_size_@('__'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name]))(
   const void * untyped_ros_message,
   size_t current_alignment)
@@ -504,7 +504,7 @@ static uint32_t _@(message.structure.namespaced_type.name)__get_serialized_size(
       untyped_ros_message, 0));
 }
 
-ROSIDL_TYPESUPPORT_FASTRTPS_C_PUBLIC_@(package_name)
+ROSIDL_TYPESUPPORT_ZENOH_C_PUBLIC_@(package_name)
 size_t max_serialized_size_@('__'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name]))(
   bool & full_bounded,
   size_t current_alignment)
@@ -606,13 +606,13 @@ static message_type_support_callbacks_t __callbacks_@(message.structure.namespac
 };
 
 static rosidl_message_type_support_t _@(message.structure.namespaced_type.name)__type_support = {
-  rosidl_typesupport_fastrtps_c__identifier,
+  rosidl_typesupport_zenoh_c__identifier,
   &__callbacks_@(message.structure.namespaced_type.name),
   get_message_typesupport_handle_function,
 };
 
 const rosidl_message_type_support_t *
-ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_fastrtps_c, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])))() {
+ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_zenoh_c, @(', '.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])))() {
   return &_@(message.structure.namespaced_type.name)__type_support;
 }
 

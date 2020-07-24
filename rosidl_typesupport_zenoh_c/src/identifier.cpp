@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rosidl_typesupport_fastrtps_c/identifier.h>
+#include <rosidl_typesupport_zenoh_c/identifier.h>
 
-#include <rosidl_typesupport_fastrtps_c/visibility_control.h>
+#include <rosidl_typesupport_zenoh_c/visibility_control.h>
 
 #if defined(__cplusplus)
 extern "C"
@@ -22,7 +22,7 @@ extern "C"
 #endif
 
 const char *
-  rosidl_typesupport_fastrtps_c__identifier = "rosidl_typesupport_fastrtps_c";
+  rosidl_typesupport_zenoh_c__identifier = "rosidl_typesupport_zenoh_c";
 
 #if defined(__cplusplus)
 }

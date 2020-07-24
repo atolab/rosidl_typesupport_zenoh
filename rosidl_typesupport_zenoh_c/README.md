@@ -1,10 +1,10 @@
-# rosidl_typesupport_fastrtps_c
+# rosidl_typesupport_zenoh_c
 
-`rosidl_typesupport_fastrtps_c` is a package that provides functionality for generating rosidl C interfaces for eProsima FastRTPS.
+`rosidl_typesupport_zenoh_c` is a package that provides functionality for generating rosidl C interfaces for Zenoh using eProsima FastCDR.
 
 ## Features
 
-`rosidl_typesupport_fastrtps_c` features are described in [FEATURES](docs/FEATURES.md).
+`rosidl_typesupport_zenoh_c` features are described in [FEATURES](docs/FEATURES.md).
 
 ## Quality Declaration
 

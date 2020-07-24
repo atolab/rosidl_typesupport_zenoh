@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(rosidl_typesupport_fastrtps_c)
+project(rosidl_typesupport_zenoh_c)
 
-if(DEFINED ENV{FASTRTPS_STATIC_DISABLE})
-  set(FASTRTPS_STATIC_DISABLE $ENV{FASTRTPS_STATIC_DISABLE}
-    CACHE BOOL "If fastrtps Static should be disabled.")
+if(DEFINED ENV{ZENOH_STATIC_DISABLE})
+  set(ZENOH_STATIC_DISABLE $ENV{ZENOH_STATIC_DISABLE}
+    CACHE BOOL "If Zenoh Static should be disabled.")
 else()
-  set(FASTRTPS_STATIC_DISABLE FALSE
-    CACHE BOOL "If fastrtps Static should be disabled.")
+  set(ZENOH_STATIC_DISABLE FALSE
+    CACHE BOOL "If Zenoh Static should be disabled.")
 endif()
 
 # Default to C99
@@ -30,20 +30,20 @@ find_package(fastrtps_cmake_module REQUIRED)
 find_package(fastcdr REQUIRED CONFIG)
 find_package(fastrtps REQUIRED CONFIG)
 find_package(FastRTPS REQUIRED MODULE)
-if(FASTRTPS_STATIC_DISABLE)
+if(ZENOH_STATIC_DISABLE)
   ament_package()
-  message(STATUS "fastrtps static rmw implementation explicitly disabled - skipping '${PROJECT_NAME}'")
+  message(STATUS "Zenoh static rmw implementation explicitly disabled - skipping '${PROJECT_NAME}'")
   return()
 endif()
 
 find_package(ament_cmake_python REQUIRED)
 find_package(rosidl_runtime_c REQUIRED)
-find_package(rosidl_typesupport_fastrtps_cpp REQUIRED)
+find_package(rosidl_typesupport_zenoh_cpp REQUIRED)
 
 ament_export_dependencies(rmw)
 ament_export_dependencies(rosidl_cmake)
 ament_export_dependencies(rosidl_runtime_c)
-ament_export_dependencies(rosidl_typesupport_fastrtps_cpp)
+ament_export_dependencies(rosidl_typesupport_zenoh_cpp)
 ament_export_include_directories(include)
 
 ament_python_install_package(${PROJECT_NAME})
@@ -53,13 +53,13 @@ add_library(${PROJECT_NAME}
   src/wstring_conversion.cpp)
 if(WIN32)
   target_compile_definitions(${PROJECT_NAME}
-    PRIVATE "ROSIDL_TYPESUPPORT_FASTRTPS_C_BUILDING_DLL")
+    PRIVATE "ROSIDL_TYPESUPPORT_ZENOH_C_BUILDING_DLL")
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include>")
 ament_target_dependencies(${PROJECT_NAME}
-  "rosidl_typesupport_fastrtps_cpp"
+  "rosidl_typesupport_zenoh_cpp"
   "rosidl_runtime_c")
 ament_export_libraries(${PROJECT_NAME})
 ament_export_targets(${PROJECT_NAME})
@@ -100,12 +100,12 @@ if(BUILD_TESTING)
 endif()
 
 ament_package(
-  CONFIG_EXTRAS "rosidl_typesupport_fastrtps_c-extras.cmake.in"
+  CONFIG_EXTRAS "rosidl_typesupport_zenoh_c-extras.cmake.in"
 )
 
 install(
-  PROGRAMS bin/rosidl_typesupport_fastrtps_c
-  DESTINATION lib/rosidl_typesupport_fastrtps_c
+  PROGRAMS bin/rosidl_typesupport_zenoh_c
+  DESTINATION lib/rosidl_typesupport_zenoh_c
 )
 
 install(

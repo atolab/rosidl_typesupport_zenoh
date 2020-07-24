@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rosidl_typesupport_fastrtps_c/wstring_conversion.hpp>
+#include <rosidl_typesupport_zenoh_c/wstring_conversion.hpp>
 
 #include "rosidl_runtime_c/u16string_functions.h"
 
-namespace rosidl_typesupport_fastrtps_c
+namespace rosidl_typesupport_zenoh_c
 {
 
 void u16string_to_wstring(const rosidl_runtime_c__U16String & u16str, std::wstring & wstr)
@@ -39,4 +39,4 @@ bool wstring_to_u16string(const std::wstring & wstr, rosidl_runtime_c__U16String
   return true;
 }
 
-}  // namespace rosidl_typesupport_fastrtps_c
+}  // namespace rosidl_typesupport_zenoh_c
