@@ -272,9 +272,120 @@ static bool _@(message.structure.namespaced_type.name)__cdr_serialize_ucdr(
   const void * untyped_ros_message,
   ucdrBuffer * writer)
 {
-  (void)untyped_ros_message;
-  (void)writer;
-  return false;
+  if (!untyped_ros_message) {
+    fprintf(stderr, "ros message handle is null\n");
+    return false;
+  }
+  const _@(message.structure.namespaced_type.name)__ros_msg_type * ros_message = static_cast<const _@(message.structure.namespaced_type.name)__ros_msg_type *>(untyped_ros_message);
+@[for member in message.structure.members]@
+  // Field name: @(member.name)
+  {
+@{
+type_ = member.type
+if isinstance(type_, AbstractNestedType):
+    type_ = type_.value_type
+}@
+@[  if isinstance(type_, NamespacedType)]@
+    const message_type_support_callbacks_t * callbacks =
+      static_cast<const message_type_support_callbacks_t *>(
+      ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(
+        rosidl_typesupport_zenoh_c, @(', '.join(type_.namespaced_name()))
+      )()->data);
+@[  end if]@
+@[  if isinstance(member.type, AbstractNestedType)]@
+@[    if isinstance(member.type, Array)]@
+    size_t size = @(member.type.size);
+    auto array_ptr = ros_message->@(member.name);
+@[    else]@
+    size_t size = ros_message->@(member.name).size;
+    auto array_ptr = ros_message->@(member.name).data;
+@[      if isinstance(member.type, BoundedSequence)]@
+    if (size > @(member.type.maximum_size)) {
+      fprintf(stderr, "array size exceeds upper bound\n");
+      return false;
+    }
+@[      end if]@
+    ucdr_serialize_uint32_t(writer, size);
+@[    end if]@
+@[    if isinstance(member.type.value_type, AbstractString)]@
+    for (size_t i = 0; i < size; ++i) {
+      const rosidl_runtime_c__String * str = &array_ptr[i];
+      if (str->capacity == 0 || str->capacity <= str->size) {
+        fprintf(stderr, "string capacity not greater than size\n");
+        return false;
+      }
+      if (str->data[str->size] != '\0') {
+        fprintf(stderr, "string not null-terminated\n");
+        return false;
+      }
+      ucdr_serialize_array_char(writer, str->data, str->size + 1);
+    }
+@[    elif isinstance(member.type.value_type, AbstractWString)]@
+    std::wstring wstr;
+    for (size_t i = 0; i < size; ++i) {
+      const rosidl_runtime_c__U16String * str = &array_ptr[i];
+      if (str->capacity == 0 || str->capacity <= str->size) {
+        fprintf(stderr, "string capacity not greater than size\n");
+        return false;
+      }
+      if (str->data[str->size] != u'\0') {
+        fprintf(stderr, "string not null-terminated\n");
+        return false;
+      }
+      rosidl_typesupport_zenoh_c::u16string_to_wstring(*str, wstr);
+      ucdr_serialize_array_wchar(writer, wstr->data, wstr->size + 1);
+    }
+@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'wchar']@
+    for (size_t i = 0; i < size; ++i) {
+      if (!callbacks->cdr_serialize(
+          static_cast<wchar_t *>(&array_ptr[i]), cdr))
+      {
+        return false;
+      }
+    }
+@[    elif isinstance(member.type.value_type, BasicType)]@
+    cdr.serializeArray(array_ptr, size);
+@[    else]@
+    for (size_t i = 0; i < size; ++i) {
+      if (!callbacks->cdr_serialize_ucdr(
+          &array_ptr[i], writer))
+      {
+        return false;
+      }
+    }
+@[    end if]@
+@[  elif isinstance(member.type, AbstractString)]@
+    const rosidl_runtime_c__String * str = &ros_message->@(member.name);
+    if (str->capacity == 0 || str->capacity <= str->size) {
+      fprintf(stderr, "string capacity not greater than size\n");
+      return false;
+    }
+    if (str->data[str->size] != '\0') {
+      fprintf(stderr, "string not null-terminated\n");
+      return false;
+    }
+    ucdr_serialize_array_char(writer, str->data, str->size + 1);
+@[  elif isinstance(member.type, AbstractWString)]@
+    std::wstring wstr;
+    rosidl_typesupport_zenoh_c::u16string_to_wstring(ros_message->@(member.name), wstr);
+    ucdr_serialize_array_wchar(writer, wstr->data, wstr->size + 1);
+@[  elif isinstance(member.type, BasicType) and member.type.typename == 'boolean']@
+    ucdr_serialize_bool(writer, (ros_message->@(member.name) ? true : false);
+@[  elif isinstance(member.type, BasicType) and member.type.typename == 'wchar']@
+    ucdr_serialize_wchar(writer, ros_message->@(member.name));
+@[  elif isinstance(member.type, BasicType)]@
+    cdr << ros_message->@(member.name);
+@[  else]@
+    if (!callbacks->cdr_serialize_ucdr(
+        &ros_message->@(member.name), cdr))
+    {
+      return false;
+    }
+@[  end if]@
+  }
+
+@[end for]@
+  return true;
 }
 
 static bool _@(message.structure.namespaced_type.name)__cdr_deserialize(

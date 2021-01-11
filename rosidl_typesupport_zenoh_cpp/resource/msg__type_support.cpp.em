@@ -442,9 +442,10 @@ static bool _@(message.structure.namespaced_type.name)__cdr_serialize_ucdr(
   const void * untyped_ros_message,
   ucdrBuffer * writer)
 {
-  (void)untyped_ros_message;
-  (void)writer;
-  return false;
+  auto typed_message =
+    static_cast<const @('::'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])) *>(
+    untyped_ros_message);
+  return cdr_serialize_ucdr(*typed_message, writer);
 }
 
 static bool _@(message.structure.namespaced_type.name)__cdr_deserialize(
