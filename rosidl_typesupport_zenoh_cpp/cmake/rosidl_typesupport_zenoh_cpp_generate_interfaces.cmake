@@ -18,6 +18,8 @@ find_package(fastcdr REQUIRED CONFIG)
 find_package(fastrtps REQUIRED CONFIG)
 find_package(FastRTPS REQUIRED MODULE)
 
+find_package(microcdr_vendor REQUIRED)
+find_package(microcdr REQUIRED)
 
 set(_output_path "${CMAKE_CURRENT_BINARY_DIR}/rosidl_typesupport_zenoh_cpp/${PROJECT_NAME}")
 
@@ -157,7 +159,8 @@ endforeach()
 
 target_link_libraries(${rosidl_generate_interfaces_TARGET}${_target_suffix}
   ${rosidl_generate_interfaces_TARGET}__rosidl_generator_cpp
-  fastrtps fastcdr)
+  fastrtps fastcdr
+  microcdr::microcdr)
 
 # Make top level generation target depend on this library
 add_dependencies(

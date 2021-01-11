@@ -38,6 +38,7 @@ header_files = [
 @{
 header_files = [
     'fastcdr/Cdr.h',
+    'ucdr/microcdr.h',
 ]
 }@
 @[for header_file in header_files]@
@@ -63,6 +64,12 @@ ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
 cdr_serialize(
   const @('::'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])) & ros_message,
   eprosima::fastcdr::Cdr & cdr);
+
+bool
+ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
+cdr_serialize(
+  const @('::'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])) & ros_message,
+  ucdrBuffer * writer);
 
 bool
 ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)

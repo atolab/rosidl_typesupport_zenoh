@@ -21,6 +21,9 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 
+find_package(microcdr_vendor REQUIRED)
+find_package(microcdr REQUIRED)
+
 find_package(fastrtps_cmake_module QUIET)
 find_package(fastcdr REQUIRED CONFIG)
 find_package(fastrtps REQUIRED CONFIG)
@@ -33,6 +36,7 @@ endif()
 
 find_package(ament_cmake_python REQUIRED)
 
+ament_export_dependencies(microcdr_vendor)
 ament_export_dependencies(fastrtps)
 ament_export_dependencies(rmw)
 ament_export_dependencies(rosidl_cmake)
