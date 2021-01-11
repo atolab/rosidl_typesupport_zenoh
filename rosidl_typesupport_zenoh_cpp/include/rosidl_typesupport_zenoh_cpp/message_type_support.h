@@ -18,6 +18,7 @@
 #include "rosidl_runtime_c/message_type_support_struct.h"
 
 #include <fastcdr/Cdr.h>
+#include <ucdr/microcdr.h>
 
 /// Encapsulates the callbacks for getting properties of this rosidl type.
 /**
@@ -40,6 +41,16 @@ typedef struct message_type_support_callbacks_t
   bool (* cdr_serialize)(
     const void * untyped_ros_message,
     eprosima::fastcdr::Cdr & cdr);
+
+  /// Callback function for message serialization
+  /**
+   * \param[in] untyped_ros_message Type erased pointer to message instance.
+   * \param [in,out] Micro-CDR buffer.
+   * \return true if serialization succeeded, false otherwise.
+   */
+  bool (* cdr_serialize_ucdr)(
+    const void * untyped_ros_message,
+    ucdrBuffer * writer);
 
   /// Callback function for message deserialization
   /**

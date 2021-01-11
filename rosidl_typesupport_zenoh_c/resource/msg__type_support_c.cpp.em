@@ -31,6 +31,7 @@ header_files = [
     include_base + '__struct.h',
     include_base + '__functions.h',
     'fastcdr/Cdr.h',
+    'ucdr/microcdr.h',
 ]
 }@
 @[for header_file in header_files]@
@@ -265,6 +266,15 @@ if isinstance(type_, AbstractNestedType):
 
 @[end for]@
   return true;
+}
+
+static bool _@(message.structure.namespaced_type.name)__cdr_serialize_ucdr(
+  const void * untyped_ros_message,
+  ucdrBuffer * writer)
+{
+  (void)untyped_ros_message;
+  (void)writer;
+  return false;
 }
 
 static bool _@(message.structure.namespaced_type.name)__cdr_deserialize(
@@ -600,6 +610,7 @@ static message_type_support_callbacks_t __callbacks_@(message.structure.namespac
   "@('::'.join([package_name] + list(interface_path.parents[0].parts)))",
   "@(message.structure.namespaced_type.name)",
   _@(message.structure.namespaced_type.name)__cdr_serialize,
+  _@(message.structure.namespaced_type.name)__cdr_serialize_ucdr,
   _@(message.structure.namespaced_type.name)__cdr_deserialize,
   _@(message.structure.namespaced_type.name)__get_serialized_size,
   _@(message.structure.namespaced_type.name)__max_serialized_size

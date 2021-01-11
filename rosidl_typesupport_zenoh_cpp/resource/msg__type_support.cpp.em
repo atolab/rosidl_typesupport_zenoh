@@ -19,6 +19,7 @@ header_files = [
     'rosidl_typesupport_zenoh_cpp/message_type_support_decl.hpp',
     'rosidl_typesupport_zenoh_cpp/wstring_conversion.hpp',
     'fastcdr/Cdr.h',
+    'ucdr/microcdr.h',
 ]
 }@
 @[for header_file in header_files]@
@@ -437,6 +438,15 @@ static bool _@(message.structure.namespaced_type.name)__cdr_serialize(
   return cdr_serialize(*typed_message, cdr);
 }
 
+static bool _@(message.structure.namespaced_type.name)__cdr_serialize_ucdr(
+  const void * untyped_ros_message,
+  ucdrBuffer * writer)
+{
+  (void)untyped_ros_message;
+  (void)writer;
+  return false;
+}
+
 static bool _@(message.structure.namespaced_type.name)__cdr_deserialize(
   eprosima::fastcdr::Cdr & cdr,
   void * untyped_ros_message)
@@ -465,6 +475,7 @@ static message_type_support_callbacks_t _@(message.structure.namespaced_type.nam
   "@('::'.join([package_name] + list(interface_path.parents[0].parts)))",
   "@(message.structure.namespaced_type.name)",
   _@(message.structure.namespaced_type.name)__cdr_serialize,
+  _@(message.structure.namespaced_type.name)__cdr_serialize_ucdr,
   _@(message.structure.namespaced_type.name)__cdr_deserialize,
   _@(message.structure.namespaced_type.name)__get_serialized_size,
   _@(message.structure.namespaced_type.name)__max_serialized_size

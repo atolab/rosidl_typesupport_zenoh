@@ -67,7 +67,7 @@ cdr_serialize(
 
 bool
 ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
-cdr_serialize(
+cdr_serialize_ucdr(
   const @('::'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])) & ros_message,
   ucdrBuffer * writer);
 
