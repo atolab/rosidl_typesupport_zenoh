@@ -373,6 +373,12 @@ if isinstance(type_, AbstractNestedType):
     ucdr_serialize_bool(writer, (ros_message->@(member.name) ? true : false);
 @[  elif isinstance(member.type, BasicType) and member.type.typename == 'wchar']@
     ucdr_serialize_wchar(writer, ros_message->@(member.name));
+@[  elif isinstance(member.type, BasicType) and member.type.typename == 'char']@
+    ucdr_serialize_char(writer, ros_message->@(member.name));
+@[  elif isinstance(member.type, BasicType) and member.type.typename == 'float32']@
+    ucdr_serialize_float(writer, ros_message->@(member.name));
+@[  elif isinstance(member.type, BasicType) and member.type.typename == 'float64']@
+    ucdr_serialize_double(writer, ros_message->@(member.name));
 @[  elif isinstance(member.type, BasicType)]@
     cdr << ros_message->@(member.name);
 @[  else]@
