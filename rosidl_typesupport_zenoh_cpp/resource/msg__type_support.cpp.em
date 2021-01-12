@@ -167,6 +167,90 @@ cdr_serialize(
 
 bool
 ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
+cdr_serialize_ucdr(
+  const @('::'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])) & ros_message,
+  ucdrBuffer * writer)
+{
+@[for member in message.structure.members]@
+  // Member: @(member.name)
+@[  if isinstance(member.type, AbstractNestedType)]@
+  {
+@[    if isinstance(member.type, Array)]@
+@[      if not isinstance(member.type.value_type, (NamespacedType, AbstractWString))]@
+    cdr << ros_message.@(member.name);
+@[      else]@
+@[        if isinstance(member.type.value_type, AbstractWString)]@
+    std::wstring wstr;
+@[        end if]@
+    for (size_t i = 0; i < @(member.type.size); i++) {
+@[        if isinstance(member.type.value_type, NamespacedType)]@
+      @('::'.join(member.type.value_type.namespaces))::typesupport_zenoh_cpp::cdr_serialize(
+        ros_message.@(member.name)[i],
+        cdr);
+@[        else]@
+      rosidl_typesupport_zenoh_cpp::u16string_to_wstring(ros_message.@(member.name)[i], wstr);
+      cdr << wstr;
+@[        end if]@
+    }
+@[      end if]@
+@[    else]@
+@[      if isinstance(member.type, BoundedSequence) or isinstance(member.type.value_type, (NamespacedType, AbstractWString))]@
+    size_t size = ros_message.@(member.name).size();
+@[        if isinstance(member.type, BoundedSequence)]@
+    if (size > @(member.type.maximum_size)) {
+      throw std::runtime_error("array size exceeds upper bound");
+    }
+@[        end if]@
+@[      end if]@
+@[      if not isinstance(member.type.value_type, (NamespacedType, AbstractWString)) and not isinstance(member.type, BoundedSequence)]@
+    cdr << ros_message.@(member.name);
+@[      else]@
+    cdr << static_cast<uint32_t>(size);
+@[        if isinstance(member.type.value_type, AbstractWString)]@
+    std::wstring wstr;
+@[        end if]@
+    for (size_t i = 0; i < size; i++) {
+@[        if isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'boolean']@
+      cdr << (ros_message.@(member.name)[i] ? true : false);
+@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'wchar']@
+      cdr << static_cast<wchar_t>(ros_message.@(member.name)[i]);
+@[        elif isinstance(member.type.value_type, AbstractWString)]@
+      rosidl_typesupport_zenoh_cpp::u16string_to_wstring(ros_message.@(member.name)[i], wstr);
+      cdr << wstr;
+@[        elif not isinstance(member.type.value_type, NamespacedType)]@
+      cdr << ros_message.@(member.name)[i];
+@[        else]@
+      @('::'.join(member.type.value_type.namespaces))::typesupport_zenoh_cpp::cdr_serialize(
+        ros_message.@(member.name)[i],
+        cdr);
+@[        end if]@
+    }
+@[      end if]@
+@[    end if]@
+  }
+@[  elif isinstance(member.type, BasicType) and member.type.typename == 'boolean']@
+  cdr << (ros_message.@(member.name) ? true : false);
+@[  elif isinstance(member.type, BasicType) and member.type.typename == 'wchar']@
+  cdr << static_cast<wchar_t>(ros_message.@(member.name));
+@[  elif isinstance(member.type, AbstractWString)]@
+  {
+    std::wstring wstr;
+    rosidl_typesupport_zenoh_cpp::u16string_to_wstring(ros_message.@(member.name), wstr);
+    cdr << wstr;
+  }
+@[  elif not isinstance(member.type, NamespacedType)]@
+  cdr << ros_message.@(member.name);
+@[  else]@
+  @('::'.join(member.type.namespaces))::typesupport_zenoh_cpp::cdr_serialize(
+    ros_message.@(member.name),
+    cdr);
+@[  end if]@
+@[end for]@
+  return true;
+}
+
+bool
+ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
 cdr_deserialize(
   eprosima::fastcdr::Cdr & cdr,
   @('::'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])) & ros_message)
