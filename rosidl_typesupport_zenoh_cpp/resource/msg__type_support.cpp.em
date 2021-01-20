@@ -65,6 +65,9 @@ size_t
 max_serialized_size_@(type_.name)(
   bool & full_bounded,
   size_t current_alignment);
+bool cdr_serialize_ucdr(
+  const @('::'.join(type_.namespaced_name())) &,
+  ucdrBuffer *);
 }  // namespace typesupport_zenoh_cpp
 @[    for ns in reversed(type_.namespaces)]@
 }  // namespace @(ns)
@@ -206,7 +209,7 @@ cdr_serialize_ucdr(
 @[      if not isinstance(member.type.value_type, (NamespacedType, AbstractWString)) and not isinstance(member.type, BoundedSequence)]@
     cdrc << ros_message.@(member.name);
 @[      else]@
-    cdrd << static_cast<uint32_t>(size);
+    ucdr_serialize_uint32_t(writer, size);
 @[        if isinstance(member.type.value_type, AbstractWString)]@
     std::wstring wstr;
 @[        end if]@
@@ -221,9 +224,9 @@ cdr_serialize_ucdr(
 @[        elif not isinstance(member.type.value_type, NamespacedType)]@
       cdrh << ros_message.@(member.name)[i];
 @[        else]@
-      @('::'.join(member.type.value_type.namespaces))::typesupport_zenoh_cpp::cdr_serialize(
+      @('::'.join(member.type.value_type.namespaces))::typesupport_zenoh_cpp::cdr_serialize_ucdr(
         ros_message.@(member.name)[i],
-        cdr);
+        writer);
 @[        end if]@
     }
 @[      end if]@
@@ -276,9 +279,9 @@ cdr_serialize_ucdr(
   // Field: @(member.name)
   cdrk << ros_message.@(member.name);
 @[  else]@
-  @('::'.join(member.type.namespaces))::typesupport_zenoh_cpp::cdr_serialize(
+  @('::'.join(member.type.namespaces))::typesupport_zenoh_cpp::cdr_serialize_ucdr(
     ros_message.@(member.name),
-    cdr);
+    writer);
 @[  end if]@
 @[end for]@
   return true;
