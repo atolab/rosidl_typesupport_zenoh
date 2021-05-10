@@ -173,7 +173,7 @@ bool
 ROSIDL_TYPESUPPORT_ZENOH_CPP_PUBLIC_@(package_name)
 cdr_serialize_ucdr(
   const @('::'.join([package_name] + list(interface_path.parents[0].parts) + [message.structure.namespaced_type.name])) & ros_message,
-  ucdrBuffer * writer)
+  eprosima::fastcdr::Cdr & cdr)
 {
 @[for member in message.structure.members]@
   // Member: @(member.name)
@@ -181,20 +181,19 @@ cdr_serialize_ucdr(
   {
 @[    if isinstance(member.type, Array)]@
 @[      if not isinstance(member.type.value_type, (NamespacedType, AbstractWString))]@
-    // cdra << ros_message.@(member.name);
-#warning Arrays not supported yet
+    cdr << ros_message.@(member.name);
 @[      else]@
 @[        if isinstance(member.type.value_type, AbstractWString)]@
     std::wstring wstr;
 @[        end if]@
     for (size_t i = 0; i < @(member.type.size); i++) {
 @[        if isinstance(member.type.value_type, NamespacedType)]@
-      @('::'.join(member.type.value_type.namespaces))::typesupport_zenoh_cpp::cdr_serialize_ucdr(
+      @('::'.join(member.type.value_type.namespaces))::typesupport_zenoh_cpp::cdr_serialize(
         ros_message.@(member.name)[i],
-        writer);
+        cdr);
 @[        else]@
       rosidl_typesupport_zenoh_cpp::u16string_to_wstring(ros_message.@(member.name)[i], wstr);
-      cdrb << wstr;
+      cdr << wstr;
 @[        end if]@
     }
 @[      end if]@
@@ -208,91 +207,35 @@ cdr_serialize_ucdr(
 @[        end if]@
 @[      end if]@
 @[      if not isinstance(member.type.value_type, (NamespacedType, AbstractWString)) and not isinstance(member.type, BoundedSequence)]@
-    // cdrc << ros_message.@(member.name);
-#warning Arrays of strings not supported yet
+    cdr << ros_message.@(member.name);
 @[      else]@
-    ucdr_serialize_uint32_t(writer, size);
+    cdr << static_cast<uint32_t>(size);
 @[        if isinstance(member.type.value_type, AbstractWString)]@
     std::wstring wstr;
 @[        end if]@
     for (size_t i = 0; i < size; i++) {
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'octet']@
-      ucdr_serialize_uint8_t(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int8']@
-      ucdr_serialize_int8_t(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint8']@
-      ucdr_serialize_uint8_t(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int16']@
-      ucdr_serialize_int16_t(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint16']@
-      ucdr_serialize_uint16_t(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int32']@
-      ucdr_serialize_int32_t(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint32']@
-      ucdr_serialize_uint32_t(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int64']@
-      ucdr_serialize_int64_t(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint64']@
-      ucdr_serialize_uint64_t(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'char']@
-      ucdr_serialize_char(writer, ros_message.@(member.name)[i]));
+@[        if isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'boolean']@
+      cdr << (ros_message.@(member.name)[i] ? true : false);
 @[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'wchar']@
-      ucdr_serialize_wchar(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'float']@
-      ucdr_serialize_float(writer, ros_message.@(member.name)[i]));
-@[        elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'double']@
-      ucdr_serialize_double(writer, ros_message.@(member.name)[i]));
+      cdr << static_cast<wchar_t>(ros_message.@(member.name)[i]);
 @[        elif isinstance(member.type.value_type, AbstractWString)]@
       rosidl_typesupport_zenoh_cpp::u16string_to_wstring(ros_message.@(member.name)[i], wstr);
-      cdrg << wstr;
+      cdr << wstr;
 @[        elif not isinstance(member.type.value_type, NamespacedType)]@
-      cdrh << ros_message.@(member.name)[i];
+      cdr << ros_message.@(member.name)[i];
 @[        else]@
-      @('::'.join(member.type.value_type.namespaces))::typesupport_zenoh_cpp::cdr_serialize_ucdr(
+      @('::'.join(member.type.value_type.namespaces))::typesupport_zenoh_cpp::cdr_serialize(
         ros_message.@(member.name)[i],
-        writer);
+        cdr);
 @[        end if]@
     }
 @[      end if]@
 @[    end if]@
   }
 @[  elif isinstance(member.type, BasicType) and member.type.typename == 'boolean']@
-  ucdr_serialize_bool(writer, ros_message.@(member.name) ? true : false);
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'octet']@
-  ucdr_serialize_uint8_t(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'int8']@
-  ucdr_serialize_int8_t(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'uint8']@
-  ucdr_serialize_uint8_t(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'int16']@
-  ucdr_serialize_int16_t(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'uint16']@
-  ucdr_serialize_uint16_t(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'int32']@
-  ucdr_serialize_int32_t(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'uint32']@
-  ucdr_serialize_uint32_t(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'int64']@
-  ucdr_serialize_int64_t(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'uint64']@
-  ucdr_serialize_uint64_t(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'char']@
-  ucdr_serialize_char(writer, ros_message.@(member.name));
+  cdr << (ros_message.@(member.name) ? true : false);
 @[  elif isinstance(member.type, BasicType) and member.type.typename == 'wchar']@
-  ucdr_serialize_wchar(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'float']@
-  ucdr_serialize_float(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, BasicType) and member.type.typename == 'double']@
-  ucdr_serialize_double(writer, ros_message.@(member.name));
-@[  elif isinstance(member.type, AbstractString)]@
-  {
-    const std::string * str = &ros_message.@(member.name);
-    if (str->capacity() == 0 || str->capacity() <= str->size()) {
-      fprintf(stderr, "string capacity not greater than size\n");
-      return false;
-    }
-    ucdr_serialize_array_char(writer, str->data(), str->size());
-  }
+  cdr << static_cast<wchar_t>(ros_message.@(member.name));
 @[  elif isinstance(member.type, AbstractWString)]@
   {
     std::wstring wstr;
@@ -300,12 +243,11 @@ cdr_serialize_ucdr(
     cdr << wstr;
   }
 @[  elif not isinstance(member.type, NamespacedType)]@
-  // Field: @(member.name)
-  cdrk << ros_message.@(member.name);
+  cdr << ros_message.@(member.name);
 @[  else]@
-  @('::'.join(member.type.namespaces))::typesupport_zenoh_cpp::cdr_serialize_ucdr(
+  @('::'.join(member.type.namespaces))::typesupport_zenoh_cpp::cdr_serialize(
     ros_message.@(member.name),
-    writer);
+    cdr);
 @[  end if]@
 @[end for]@
   return true;
