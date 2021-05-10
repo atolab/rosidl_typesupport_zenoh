@@ -321,20 +321,8 @@ if isinstance(type_, AbstractNestedType):
       ucdr_serialize_array_char(writer, str->data, str->size + 1);
     }
 @[    elif isinstance(member.type.value_type, AbstractWString)]@
-    std::wstring wstr;
-    for (size_t i = 0; i < size; ++i) {
-      const rosidl_runtime_c__U16String * str = &array_ptr[i];
-      if (str->capacity == 0 || str->capacity <= str->size) {
-        fprintf(stderr, "string capacity not greater than size\n");
-        return false;
-      }
-      if (str->data[str->size] != u'\0') {
-        fprintf(stderr, "string not null-terminated\n");
-        return false;
-      }
-      rosidl_typesupport_zenoh_c::u16string_to_wstring(*str, wstr);
-      ucdr_serialize_array_wchar(writer, wstr->data, wstr->size + 1);
-    }
+    // TODO(esteve): add support for wstring
+#error "Wide strings not supported"
 @[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'wchar']@
     for (size_t i = 0; i < size; ++i) {
       if (!callbacks->cdr_serialize(
@@ -366,7 +354,8 @@ if isinstance(type_, AbstractNestedType):
 @[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'char']@
     ucdr_serialize_array_char(writer, array_ptr, size);
 @[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'wchar']@
-    ucdr_serialize_array_wchar(writer, array_ptr, size);
+    // TODO(esteve): add support for wstring
+#error "Wide strings not supported"
 @[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'float']@
     ucdr_serialize_array_float(writer, array_ptr, size);
 @[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'double']@
