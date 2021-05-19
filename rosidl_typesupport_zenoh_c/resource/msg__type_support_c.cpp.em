@@ -30,7 +30,6 @@ header_files = [
     package_name + '/msg/rosidl_typesupport_zenoh_c__visibility_control.h',
     include_base + '__struct.h',
     include_base + '__functions.h',
-    'fastcdr/Cdr.h',
     'ucdr/microcdr.h',
 ]
 }@
