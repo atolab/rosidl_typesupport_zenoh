@@ -195,11 +195,11 @@ cdr_serialize_ucdr(
         fprintf(stderr, "string capacity not greater than size\n");
         return false;
       }
-      if (str->data[str->size()] != '\0') {
+      if (str->data()[str->size()] != '\0') {
         fprintf(stderr, "string not null-terminated\n");
         return false;
       }
-      ucdr_serialize_array_char(writer, str->data, str->size + 1);
+      ucdr_serialize_array_char(writer, str->data(), str->size() + 1);
     }
 @[    elif isinstance(member.type.value_type, AbstractWString)]@
     // TODO(esteve): add support for wstring
