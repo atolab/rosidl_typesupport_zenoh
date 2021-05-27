@@ -186,91 +186,45 @@ cdr_serialize_ucdr(
 @[      if not isinstance(member.type.value_type, (NamespacedType, AbstractWString))]@
 
 
-
-
-@[    if isinstance(member.type.value_type, AbstractString)]@
-    for (size_t i = 0; i < size; ++i) {
-      const std::string * str = &array_ptr[i];
-      if (str->capacity() == 0 || str->capacity() <= str->size()) {
-        fprintf(stderr, "string capacity not greater than size\n");
-        return false;
-      }
-      if (str->data()[str->size()] != '\0') {
-        fprintf(stderr, "string not null-terminated\n");
-        return false;
-      }
-      ucdr_serialize_array_char(writer, str->data(), str->size() + 1);
+@[  if isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'boolean']@
+  ucdr_serialize_array_bool(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'wchar']@
+  ucdr_serialize_array_wchar(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'octet']@
+  ucdr_serialize_array_uint8_t(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int8']@
+  ucdr_serialize_array_int8_t(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint8']@
+  ucdr_serialize_array_uint8_t(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int16']@
+  ucdr_serialize_array_int16_t(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint16']@
+  ucdr_serialize_array_uint16_t(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int32']@
+  ucdr_serialize_array_int32_t(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint32']@
+  ucdr_serialize_array_uint32_t(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int64']@
+  ucdr_serialize_array_int64_t(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint64']@
+  ucdr_serialize_array_uint64_t(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'char']@
+  ucdr_serialize_array_char(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'wchar']@
+  ucdr_serialize_array_wchar(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'float']@
+  ucdr_serialize_array_float(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[  elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'double']@
+  ucdr_serialize_array_double(writer, ros_message.@(member.name).data(), @(member.type.size));
+@[    elif isinstance(member.type.value_type, AbstractString)]@
+    for (size_t i = 0; i < @(member.type.size); ++i) {
+      ucdr_serialize_array_char(writer, ros_message.@(member.name)[i].data(), ros_message.@(member.name)[i].size());
     }
-@[    elif isinstance(member.type.value_type, AbstractWString)]@
-    // TODO(esteve): add support for wstring
-#error "Wide strings not supported"
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'wchar']@
-    for (size_t i = 0; i < size; ++i) {
-      if (!callbacks->cdr_serialize(
-          static_cast<wchar_t *>(&array_ptr[i]), cdr))
-      {
-        return false;
-      }
-    }
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'boolean']@
-    ucdr_serialize_array_bool(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'octet']@
-    ucdr_serialize_array_uint8_t(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int8']@
-    ucdr_serialize_array_int8_t(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint8']@
-    ucdr_serialize_array_uint8_t(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int16']@
-    ucdr_serialize_array_int16_t(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint16']@
-    ucdr_serialize_array_uint16_t(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int32']@
-    ucdr_serialize_array_int32_t(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint32']@
-    ucdr_serialize_array_uint32_t(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'int64']@
-    ucdr_serialize_array_int64_t(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'uint64']@
-    ucdr_serialize_array_uint64_t(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'char']@
-    ucdr_serialize_array_char(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'wchar']@
-    // TODO(esteve): add support for wstring
-#error "Wide strings not supported"
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'float']@
-    ucdr_serialize_array_float(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType) and member.type.value_type.typename == 'double']@
-    ucdr_serialize_array_double(writer, array_ptr, size);
-@[    elif isinstance(member.type.value_type, BasicType)]@
-#error Unknown type @(member.type.value_type.typename) for member @(member.name)
-@[    else]@
-    for (size_t i = 0; i < size; ++i) {
-      if (!callbacks->cdr_serialize_ucdr(
-          &array_ptr[i], writer))
-      {
-        return false;
-      }
-    }
-@[    end if]@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@[  elif isinstance(member.type.value_type, BasicType)]@
+#error Unknown basic type @(member.type) for member @(member.name)
+@[  else]@
+#error Serialization not supported for member @(member.name) @(member.type)
+@[  end if]@
 
 @[      else]@
 @[        if isinstance(member.type.value_type, AbstractWString)]@
