@@ -368,7 +368,8 @@ cdr_serialize_ucdr(
   {
     std::wstring wstr;
     rosidl_typesupport_zenoh_cpp::u16string_to_wstring(ros_message.@(member.name), wstr);
-    cdrg << wstr;
+// TODO(esteve): add support for wide strings
+#error Wide string not supported yet
   }
 @[  elif not isinstance(member.type, NamespacedType)]@
 #warning Unknown basic type @(member.type) for member @(member.name)
